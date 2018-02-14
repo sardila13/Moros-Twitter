@@ -1,6 +1,7 @@
 package twiter;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,15 +9,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.json.simple.parser.ParseException;
-
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
+
 
 public class twitter {
 
@@ -29,6 +28,7 @@ public class twitter {
 	private PrintWriter pw_salida;
 
 	private long total_solicitudes;
+	private String url_syso;
 	
 	public twitter() throws java.text.ParseException, TwitterException{
 
@@ -96,7 +96,7 @@ public class twitter {
 	}
 
 	public void escribirTitulosColumnas() throws IOException{
-		pw_salida.println("Actor,Fuente,Fecha de la publica,Publicaci�n\n");		
+		pw_salida.println("Actor,Fuente,Fecha de la publica,Publicacion\n");		
 	}
 
 
@@ -148,16 +148,23 @@ public class twitter {
 			
 		}
 		if(contiene) {
+			CharSequence cs2 = ",";
 			cs = "\n";
 			if(contenido.contains(cs)){
 				contenido = contenido.replace(cs, ". ");
 			}
+			if(contenido.contains(cs2)){
+				contenido = contenido.replace(cs2, "; ");
+			}
+			System.out.println(contenido);
 			pw_salida.write(actor + ",Twitter," + fecha + "," + contenido + "\n" );
 		}	
 		
 	}
+	
 	public static void main(String[] args) throws TwitterException {
 		ConfigurationBuilder configBuilder = new ConfigurationBuilder();
+		configBuilder.setTweetModeExtended(true);
 		configBuilder.setDebugEnabled(true)
 		.setOAuthConsumerKey("vuSBLc2AgS30JLTDmrkbIjfFf")
 		.setOAuthConsumerSecret("QtUPyk7qNvY7ePqS6klCHuptQTezMKkzGm1KUAysISxc1WFkP6")
