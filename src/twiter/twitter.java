@@ -96,7 +96,7 @@ public class twitter {
 	}
 
 	public void escribirTitulosColumnas() throws IOException{
-		pw_salida.println("Actor,Fuente,Fecha de la publica,Publicacion\n");		
+		pw_salida.println("Actor;Fuente;Fecha de la publica;Publicacion\n");		
 	}
 
 
@@ -125,6 +125,7 @@ public class twitter {
 			}
 		}
 		System.out.println(page + " " + total);
+		total_solicitudes+= total;
 	}
 
 	private void escribirInformacion(Status status, String actor) throws java.text.ParseException {
@@ -148,28 +149,27 @@ public class twitter {
 			
 		}
 		if(contiene) {
-			CharSequence cs2 = ",";
+			CharSequence cs2 = ";";
 			cs = "\n";
 			if(contenido.contains(cs)){
 				contenido = contenido.replace(cs, ". ");
 			}
 			if(contenido.contains(cs2)){
-				contenido = contenido.replace(cs2, "; ");
+				contenido = contenido.replace(cs2, ", ");
 			}
-			System.out.println(contenido);
-			pw_salida.write(actor + ",Twitter," + fecha + "," + contenido + "\n" );
+			pw_salida.write(actor + ";Twitter;" + fecha + ";" + contenido + "\n" );
 		}	
 		
 	}
 	
 	public static void main(String[] args) throws TwitterException {
 		ConfigurationBuilder configBuilder = new ConfigurationBuilder();
-		configBuilder.setTweetModeExtended(true);
 		configBuilder.setDebugEnabled(true)
 		.setOAuthConsumerKey("vuSBLc2AgS30JLTDmrkbIjfFf")
 		.setOAuthConsumerSecret("QtUPyk7qNvY7ePqS6klCHuptQTezMKkzGm1KUAysISxc1WFkP6")
 		.setOAuthAccessToken("881969698300190720-CKiZL1ZsQib1AZHJAZ6ihfc27MmsoVX")
-		.setOAuthAccessTokenSecret("ezCP853iLxK3RilX1Fh8LSQZUIc4gRkfglsSdFVyPsku7");
+		.setOAuthAccessTokenSecret("ezCP853iLxK3RilX1Fh8LSQZUIc4gRkfglsSdFVyPsku7")
+		.setTweetModeExtended(true);
 
 		TwitterFactory tf = new TwitterFactory(configBuilder.build());
 		twitter = tf.getInstance();
